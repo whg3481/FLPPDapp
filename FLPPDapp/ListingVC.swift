@@ -1,8 +1,7 @@
 //
-//  ListingVC.swift
 //  FLPPDapp
 //
-//  Created by New User on 11/30/16.
+//  Created by New User on 12/1/16.
 //  Copyright © 2016 Will Garner. All rights reserved.
 //
 
@@ -15,11 +14,13 @@ struct Listing {
   let key: String!
   let content: String!
   let addedByUser: String!
+  let address: String!
   let itemRef: FIRDatabaseReference?
   
-  init(content: String, addedByUser:String, key:String = "") {
+  init(content: String, addedByUser:String, key:String = "", address: String) {
     self.key = key
     self.content = content
+    self.address = address
     self.addedByUser = addedByUser
     self.itemRef = nil
   }
@@ -28,18 +29,13 @@ struct Listing {
     key = snapshot.key
     itemRef = snapshot.ref
     
-    if let listingContent = snapshot.value as? NSDictionary? {
-      content = listingContent?[""] as? String
-    } else {
-      content = ""
-   }
-    
-    if let user = snapshot.value as? NSDictionary? {
-       addedByUser = user?[""] as? String
-    } else {
-      addedByUser = ""
-    }
+    let snapshotValue = snapshot.value as! [String:AnyObject]
+    content = snapshotValue["content"] as! String
+    addedByUser = snapshotValue["addedByUser"] as! String
+    address = snapshotValue["address"] as! String
     
   }
-  
+  func toAnyObject() -> Any {
+    return ["content":content, "addedByUser": addedByUser]
+  }
 }

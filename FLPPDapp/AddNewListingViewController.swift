@@ -17,6 +17,8 @@ protocol AddListingViewControllerDelegate: class {
 
 class AddNewListingViewController: UIViewController {
 
+  var dbRef:FIRDatabaseReference!
+  
     @IBOutlet weak var Address: UITextField!
   @IBOutlet weak var Zipcode: UITextField!
   @IBOutlet weak var State: UITextField!
@@ -27,6 +29,10 @@ class AddNewListingViewController: UIViewController {
   
   @IBAction func ListButton(_ sender: UIButton) {
     
+    
+    let property = ["title":"My House"]
+    let propertyListing = self.dbRef.child("listing-items")
+    propertyListing.setValue(property)
     
     
     
@@ -40,8 +46,10 @@ class AddNewListingViewController: UIViewController {
     override func viewDidLoad() {  
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
+      
+      
+      
+  }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

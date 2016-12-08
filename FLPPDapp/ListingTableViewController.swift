@@ -9,14 +9,15 @@
   
 
   import UIKit
+  import Firebase
   import FirebaseDatabase
   import FirebaseAuth
   
-  class SweetsTableViewController: UITableViewController {
+  class ListingTableViewController: UITableViewController {
     
     
     var dbRef:FIRDatabaseReference!
-    var sweets = [Sweet]()
+    var listings = [Listing]()
     
     var addedByUser = ""
     var content = ""
@@ -27,20 +28,21 @@
       super.viewDidLoad()
       
       
-      dbRef = FIRDatabase.database().reference().child("sweet-items")
+      dbRef = FIRDatabase.database().reference().child("listing-items")
       startObservingDB()
     }
     
     func startObservingDB () {
       dbRef.observe(.value, with: {  (snapshot:FIRDataSnapshot) in
-        var newSweets = [Sweet]()
+        var newListings = [Listing]()
         
-        for sweet in snapshot.children {
-          let sweetObject = Sweet(snapshot: sweet as! FIRDataSnapshot)
-          newSweets.append(sweetObject)
+        for listing in snapshot.children {
+          let listingObject = Listing(snapshot: listing as! FIRDataSnapshot)
+    
+          newListings.append(listingObject)
         }
         
-        self.sweets = newSweets
+        self.listings = newListings
         self.tableView.reloadData()
         
         
@@ -51,26 +53,26 @@
       }
     }
     
-    @IBAction func addSweet(_ sender: AnyObject) {
+    @IBAction func addListing(_ sender: AnyObject) {
       
-      
-      let sweetAlert = UIAlertController(title: "New Sweet", message: "Enter your Sweet", preferredStyle: UIAlertControllerStyle.alert)
-      sweetAlert.addTextField { (textField : UITextField!)  in
-        textField.placeholder = "Your Sweet"
+      //remove this alert
+      let listingAlert = UIAlertController(title: "New Listing", message: "Enter your Listing", preferredStyle: UIAlertControllerStyle.alert)
+      listingAlert.addTextField { (textField : UITextField!)  in
+        textField.placeholder = "Your Listing"
       }
       
-      sweetAlert.addAction(UIAlertAction(title: "Send", style: .default, handler: { (action:UIAlertAction) in
-        if let sweetContent = sweetAlert.textFields?.first?.text {
-          let sweet : [String : Any] = [self.content: sweetContent,  self.addedByUser: "Will Garner"]
+      listingAlert.addAction(UIAlertAction(title: "Send", style: .default, handler: { (action:UIAlertAction) in
+        if let listingContent = listingAlert.textFields?.first?.text {
+          let listing : [String : Any] = [self.content: listingContent,  self.addedByUser: "Will Garner"]
           
-          let sweetRef = self.dbRef.child(sweetContent.lowercased())
+          let listingRef = self.dbRef.child(listingContent.lowercased())
           
-          sweetRef.setValue(sweet)
+          listingRef.setValue(listing)
         }
         
       }))
       
-      self.present(sweetAlert, animated: true, completion: nil)
+      self.present(listingAlert, animated: true, completion: nil)
       
     }
     
@@ -81,19 +83,32 @@
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return sweets.count
+      return listings.count
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
       
-      let sweet = sweets[indexPath.row]
+      let listing = listings[indexPath.row]
       
-      cell.textLabel?.text = sweet.content
-      cell.detailTextLabel?.text = sweet.addedByUser
+      cell.textLabel?.text = listing.content
+      cell.detailTextLabel?.text = listing.addedByUser
       
       return cell
+      
+      
+      /* var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+      
+      let label1 = cell?.viewWithTag(1) as! UILabel
+      label1.text = posts[indexPath.row].title
+      
+      let label2 = cell?.viewWithTag(2) as! UILabel
+      label2.text = posts[indexPath.row].message
+      
+      
+      return cell!*/
+    
     }
     
     

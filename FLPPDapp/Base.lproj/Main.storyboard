@@ -132,7 +132,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="8J0-EV-T9C" kind="relationship" relationship="viewControllers" id="tjR-td-EGy"/>
-                        <segue destination="1sQ-MK-ZsB" kind="relationship" relationship="viewControllers" id="5he-XB-vg6"/>
                         <segue destination="Qdk-Pk-UEN" kind="relationship" relationship="viewControllers" id="weC-hP-aCd"/>
                         <segue destination="u1z-Mf-riW" kind="relationship" relationship="viewControllers" id="bJ4-Qs-Gm3"/>
                     </connections>
@@ -195,9 +194,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="tableViewVC" destination="MtB-1G-aB2" id="kU2-t8-eFx"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YzI-eL-sA4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
